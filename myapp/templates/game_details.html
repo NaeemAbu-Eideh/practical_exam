@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="flex mt-10 justify-between ml-30 mr-30 border-b-2 pb-4">
+        <div class="flex justify-between items-center w-90">
+            <img src="{{user.avatar}}" class="h-20 w-20 rounded-[50%]">
+            <h1 class="text-3xl font-bold">Welcome {{user.fname}}</h1>
+        </div>
+        <form action="/dashboard/logout" method="post">
+            {% csrf_token %}
+            <input type="submit" class="underline text-blue-400" value="Logout">
+        </form>
+    </div>
+    <div class="flex mt-10 ml-50">
+        <div class="inline-block ml-15 w-160 mr-30">
+            <h2 class="text-4xl mb-6">{{game.name}}</h2>
+            <p class="text-[1.4em] mb-4">Gener: {{game.Gener}}</p>
+            <p class="text-[1.4em] mb-4">Description: {{game.desc}}</p>
+            <p class="text-[1.4em] mb-4">created by: {{game.user.fname}} {{game.user.lname}}</p>
+            {% if user.email == game.user.email %}
+            <div class="flex">
+                <form action="/edit/game/{{game.id}}" class="mr-10">
+                    <input type="submit" value="Edit" class="border shadow-[3px_3px_3px_rgb(0,0,0)]">
+                </form>
+                <form action="/{{game.id}}/delete">
+                    <input type="submit" value="Delete" class="border shadow-[3px_3px_3px_rgb(0,0,0)]">
+                </form>
+            </div>
+            {% else %}
+            <div class="flex">
+                <form action="/game/{{game.id}}/add_to_favorite" class="mr-10">
+                    <input type="submit" value="Add to favorite" class="border shadow-[3px_3px_3px_rgb(0,0,0)]">
+                </form>
+                <form action="/game/{{game.id}}">
+                    <label for="">Rete</label>
+                    <select type="submit" name="rate" class="border shadow-[3px_3px_3px_rgb(0,0,0)]">
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                        <option value="">4</option>
+                        <option value="">5</option>
+                    </select>
+                    <input type="submit" value="enter your rate" class="border ml-10">
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        <div class="h-180 w-300 mt-5 mr-40 overflow-y-auto ml-50">
+            <table class="border">
+                <tr class="border">
+                    <th class="border px-4 bg-gray-300">ID</th>
+                    <th class="border px-15 bg-gray-300">Name</th>
+                    <th class="border px-10 bg-gray-300">Action</th>
+                </tr>
+                {% for fav in favorites %}
+                <tr class="border odd:bg-gray-200">
+                    <td class="border py-2 font-bold pl-1">{{author.id}}</td>
+                    <td class="border py-2 font-bold pl-1">{{author.first_name}} {{author.last_name}}</td>
+                    <td class="border py-2 font-bold text-blue-700 underline pl-1"><a href="/{{author.id}}">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

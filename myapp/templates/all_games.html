@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="flex mt-10 justify-between ml-30 mr-30 border-b-2 pb-4">
+        <div class="flex justify-between items-center w-90">
+            <img src="{{user.avatar}}" class="h-20 w-20 rounded-[50%]">
+            <h1 class="text-3xl font-bold">Welcome {{user.fname}}</h1>
+        </div>
+        <form action="/dashboard/logout" method="post">
+            {% csrf_token %}
+            <input type="submit" class="underline text-blue-400" value="Logout">
+        </form>
+    </div>
+    <div class="flex ml-10">
+        <div class="h-90 w-200 ml-60 mt-10">
+            <form action="/dashboard/add-game" method="post">
+                {% csrf_token %}
+                <div class="w-130 ml-10 flex justify-around mb-10">
+                    <label for="title">Game name</label>
+                    <input class="border w-80 h-7" type="text" name="name">
+                </div>
+                <div class="w-130 ml-10 flex justify-around mb-10">
+                    <label for="">Gener</label>
+                    <div class="w-130 ml-10 flex justify-around mb-10">
+                        <input type="text" name="new_type" class="border w-80 h-7">
+                    </div>
+                </div>
+                <div class="w-130 ml-10 flex justify-around mb-10">
+                    <label for="title">Release Date</label>
+                    <input class="border w-80 h-7" type="datetime" name="date">
+                </div>
+                <div class="w-130 ml-10 flex justify-around mb-5">
+                    <label for="desc" class="ml-4">Description</label>
+                    <textarea class="border w-80 h-15 mr-4" type="text" name="desc"></textarea>
+                </div>
+                <input type="submit" class="border h-10 w-30 px-2 py-2 ml-50.5 shadow-[2px_2px_2px_rgb(0,0,0)]"
+                    value="Create a game">
+            </form>
+            <div class="mt-10 ml-10">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.extra_tags == 'game' %}
+                <p class="text-red-400 mb-3">{{message}}</p>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="h-180 w-300 mt-5 mr-40 overflow-y-auto ml-50">
+            <table class="border">
+                <tr class="border">
+                    <th class="border px-7 bg-gray-300">
+                        <form action="/sort_by_game"><input type="submit" value="Game"></form>
+                    </th>
+                    <th class="border px-20 bg-gray-300">
+                        <form action="/sort_by_gener"><input type="submit" value="Gener"></form>
+                    </th>
+                    <th class="border px-10 bg-gray-300">
+                        <form action="/sort_by_date"><input type="submit" value="Release Date"></form>
+                    </th>
+                </tr>
+                {% for game in games %}
+                <tr class="border odd:bg-gray-200">
+                    <td class="border py-2 font-bold pl-1">
+                        <form action="/game/{{game.id}}"><input type="submit" class="text-blue-400 font-bold underline"
+                                value="{{game.name}}"></form>
+                    </td>
+                    <td class="border py-2 font-bold pl-1">{{game.Genre}}</td>
+                    <td class="border py-2 font-bold pl-1">{{game.created_at}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

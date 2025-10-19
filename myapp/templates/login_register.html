@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="flex mt-10">
+        <div class="w-100 ml-50">
+            <form action="/register" method="post">
+                {% csrf_token %}
+                <div class="flex justify-between mb-7">
+                    <label for="">First Name</label>
+                    <input type="text" name="fname" class="border ml-20">
+                </div>
+                <div class="flex justify-between mb-7">
+                    <label for="">Last Name</label>
+                    <input type="text" name="lname" class="border ml-20">
+                </div>
+                <div class="flex justify-between mb-7">
+                    <label for="">Email</label>
+                    <input type="text" name="email" class="border ml-20">
+                </div>
+                <div class="flex justify-between mb-7">
+                    <label for="">Date Of Birth</label>
+                    <input type="datetime" name="date" class="border ml-20">
+                </div>
+                <div class="flex justify-between mb-7">
+                    <label for="">Password</label>
+                    <input type="password" name="pass" class="border ml-20">
+                </div>
+                <div class="flex justify-between mb-7">
+                    <label for="">Confirm Password</label>
+                    <input type="password" name="cpass" class="border ml-20">
+                </div>
+                <div class="flex justify-between mb-7">
+                    <label for="">Upload Avatar</label>
+                    <input type="text" name="avatar" class="border ml-20">
+                </div>
+                <input type="submit" value="Create Account"
+                    class="border shadow-[3px_3px_3px_rgb(0,0,0)] w-35 h-7 block mx-auto px-3">
+            </form>
+            <div class="mt-10">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.extra_tags == 'register' %}
+                <p class="text-red-400 mb-3">{{message}}</p>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="w-100 ml-50">
+            <form action="/login" method="post">
+                {% csrf_token %}
+                <div class="flex justify-between mb-7 w-80 mx-auto mt-10">
+                    <label for="">Email</label>
+                    <input type="text" name="email" class="border ml-20">
+                </div>
+                <div class="flex justify-between mb-7 w-80 mx-auto">
+                    <label for="">Password</label>
+                    <input type="password" name="pass" class="border ml-20">
+                </div>
+                <input type="submit" value="Signin"
+                    class="border shadow-[3px_3px_3px_rgb(0,0,0)] w-20 h-7 block mx-auto">
+            </form>
+            <div class="mt-10 ml-10">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.extra_tags == 'login' %}
+                <p class="text-red-400 mb-3">{{message}}</p>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
